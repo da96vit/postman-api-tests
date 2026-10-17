@@ -2,7 +2,7 @@
   "info": {
     "name": "Restful Booker API Tests",
     "_postman_id": "6f1d3c2e-8a4b-4c55-9e1f-2b7a9d0c1e11",
-    "description": "Automated API test suite for the public Restful Booker practice API (https://restful-booker.herokuapp.com).\n\nCovers health check, authentication, full booking CRUD, search, schema validation and negative cases (403 / 404 / bad credentials). Requests chain data through collection variables, so the whole collection runs end to end with the Collection Runner or Newman.\n\nAuthor: Davit Jikurashvili, Senior QA Automation Engineer",
+    "description": "Automated API test suite for the public Restful Booker practice API (https://restful-booker.herokuapp.com).\n\nCovers health check, authentication, full booking CRUD, search, schema validation and negative cases (403 / 404 / bad credentials). Requests chain data through collection variables, so the whole collection runs end to end with the Collection Runner or Newman.\n\nAuthor: Davit Jikurashvili, Senior QA Engineer",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "event": [
@@ -20,10 +20,26 @@
     }
   ],
   "variable": [
-    { "key": "token", "value": "" },
-    { "key": "bookingId", "value": "" },
-    { "key": "firstname", "value": "" },
-    { "key": "lastname", "value": "" }
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "bookingId",
+      "value": ""
+    },
+    {
+      "key": "firstname",
+      "value": ""
+    },
+    {
+      "key": "lastname",
+      "value": ""
+    },
+    {
+      "key": "negBookingId",
+      "value": ""
+    }
   ],
   "item": [
     {
@@ -46,7 +62,15 @@
           ],
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/ping", "host": ["{{baseUrl}}"], "path": ["ping"] }
+            "url": {
+              "raw": "{{baseUrl}}/ping",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ping"
+              ]
+            }
           }
         }
       ]
@@ -79,12 +103,25 @@
           ],
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/auth", "host": ["{{baseUrl}}"], "path": ["auth"] }
+            "url": {
+              "raw": "{{baseUrl}}/auth",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth"
+              ]
+            }
           }
         },
         {
@@ -95,6 +132,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "// Restful Booker answers 200 (not 401) for bad credentials, so the body is the real check.",
+                  "",
                   "const body = pm.response.json();",
                   "",
                   "pm.test('No token is issued', () => {",
@@ -110,12 +149,25 @@
           ],
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"wrong-password\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/auth", "host": ["{{baseUrl}}"], "path": ["auth"] }
+            "url": {
+              "raw": "{{baseUrl}}/auth",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth"
+              ]
+            }
           }
         }
       ]
@@ -195,14 +247,28 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"firstname\": \"{{firstname}}\",\n  \"lastname\": \"{{lastname}}\",\n  \"totalprice\": 250,\n  \"depositpaid\": true,\n  \"bookingdates\": {\n    \"checkin\": \"2026-11-01\",\n    \"checkout\": \"2026-11-05\"\n  },\n  \"additionalneeds\": \"Breakfast\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/booking", "host": ["{{baseUrl}}"], "path": ["booking"] }
+            "url": {
+              "raw": "{{baseUrl}}/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            }
           }
         },
         {
@@ -235,11 +301,21 @@
           ],
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/booking/{{bookingId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["booking", "{{bookingId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
             }
           }
         },
@@ -268,11 +344,21 @@
             "method": "GET",
             "url": {
               "raw": "{{baseUrl}}/booking?firstname={{firstname}}&lastname={{lastname}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["booking"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ],
               "query": [
-                { "key": "firstname", "value": "{{firstname}}" },
-                { "key": "lastname", "value": "{{lastname}}" }
+                {
+                  "key": "firstname",
+                  "value": "{{firstname}}"
+                },
+                {
+                  "key": "lastname",
+                  "value": "{{lastname}}"
+                }
               ]
             }
           }
@@ -304,9 +390,18 @@
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Cookie", "value": "token={{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -314,8 +409,13 @@
             },
             "url": {
               "raw": "{{baseUrl}}/booking/{{bookingId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["booking", "{{bookingId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
             }
           }
         },
@@ -349,9 +449,18 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" },
-              { "key": "Cookie", "value": "token={{token}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -359,8 +468,13 @@
             },
             "url": {
               "raw": "{{baseUrl}}/booking/{{bookingId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["booking", "{{bookingId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
             }
           }
         },
@@ -381,11 +495,21 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [{ "key": "Cookie", "value": "token={{token}}" }],
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "token={{token}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/booking/{{bookingId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["booking", "{{bookingId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
             }
           }
         },
@@ -406,11 +530,21 @@
           ],
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/booking/{{bookingId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["booking", "{{bookingId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{bookingId}}"
+              ]
             }
           }
         }
@@ -422,6 +556,25 @@
         {
           "name": "Update without token is forbidden",
           "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Create a fresh booking so the 403 checks run against a booking that really exists",
+                  "// (a fixed id such as /booking/1 may have been deleted by other users of the public API).",
+                  "pm.sendRequest({",
+                  "    url: pm.environment.get('baseUrl') + '/booking',",
+                  "    method: 'POST',",
+                  "    header: { 'Content-Type': 'application/json', Accept: 'application/json' },",
+                  "    body: { mode: 'raw', raw: JSON.stringify({ firstname: 'Davit', lastname: 'QA-negative', totalprice: 100, depositpaid: true, bookingdates: { checkin: '2026-12-01', checkout: '2026-12-02' } }) }",
+                  "}, (err, res) => {",
+                  "    if (err) { throw err; }",
+                  "    pm.collectionVariables.set('negBookingId', res.json().bookingid);",
+                  "});"
+                ]
+              }
+            },
             {
               "listen": "test",
               "script": {
@@ -437,17 +590,28 @@
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"firstname\": \"Hacker\",\n  \"lastname\": \"NoToken\",\n  \"totalprice\": 1,\n  \"depositpaid\": false,\n  \"bookingdates\": {\n    \"checkin\": \"2026-12-01\",\n    \"checkout\": \"2026-12-02\"\n  }\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/booking/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["booking", "1"]
+              "raw": "{{baseUrl}}/booking/{{negBookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{negBookingId}}"
+              ]
             }
           }
         },
@@ -461,18 +625,35 @@
                 "exec": [
                   "pm.test('Status code is 403 Forbidden', () => {",
                   "    pm.response.to.have.status(403);",
-                  "});"
+                  "});",
+                  "",
+                  "// Clean-up: delete the booking created for the negative checks with the valid token.",
+                  "pm.sendRequest({",
+                  "    url: pm.environment.get('baseUrl') + '/booking/' + pm.collectionVariables.get('negBookingId'),",
+                  "    method: 'DELETE',",
+                  "    header: { Cookie: 'token=' + pm.collectionVariables.get('token') }",
+                  "}, () => {});"
                 ]
               }
             }
           ],
           "request": {
             "method": "DELETE",
-            "header": [{ "key": "Cookie", "value": "token=invalid-token-123" }],
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "token=invalid-token-123"
+              }
+            ],
             "url": {
-              "raw": "{{baseUrl}}/booking/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["booking", "1"]
+              "raw": "{{baseUrl}}/booking/{{negBookingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "{{negBookingId}}"
+              ]
             }
           }
         },
@@ -493,11 +674,21 @@
           ],
           "request": {
             "method": "GET",
-            "header": [{ "key": "Accept", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/booking/999999999",
-              "host": ["{{baseUrl}}"],
-              "path": ["booking", "999999999"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking",
+                "999999999"
+              ]
             }
           }
         },
@@ -509,8 +700,10 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('Request is not accepted (no 2xx)', () => {",
-                  "    pm.expect(pm.response.code).to.not.be.within(200, 299);",
+                  "// Restful Booker answers 500 Internal Server Error here. A correct API would answer 400 Bad Request.",
+                  "// The test pins the current behaviour and the defect is listed in the README (Known API defects).",
+                  "pm.test('Rejected with 500 (known defect: should be 400 Bad Request)', () => {",
+                  "    pm.response.to.have.status(500);",
                   "});",
                   "",
                   "pm.test('No booking id is returned', () => {",
@@ -523,14 +716,28 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"firstname\": \"OnlyFirstName\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/booking", "host": ["{{baseUrl}}"], "path": ["booking"] }
+            "url": {
+              "raw": "{{baseUrl}}/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            }
           }
         }
       ]
