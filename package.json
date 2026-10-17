@@ -1,0 +1,21 @@
+{
+  "name": "postman-api-tests",
+  "version": "1.0.0",
+  "description": "Postman API test collection for Restful Booker, run with Newman in GitHub Actions",
+  "scripts": {
+    "test": "newman run collections/restful-booker.postman_collection.json -e environments/restful-booker.postman_environment.json -r cli,htmlextra,junit --reporter-htmlextra-export reports/report.html --reporter-htmlextra-title \"Restful Booker API Tests\" --reporter-junit-export reports/junit.xml"
+  },
+  "keywords": [
+    "postman",
+    "newman",
+    "api-testing",
+    "qa",
+    "rest-api"
+  ],
+  "author": "Davit Jikurashvili",
+  "license": "MIT",
+  "devDependencies": {
+    "newman": "^6.2.3",
+    "newman-reporter-htmlextra": "^1.23.1"
+  }
+}
